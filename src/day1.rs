@@ -9,8 +9,6 @@ fn shift<T: Copy>(vec: &Vec<T>, distance: usize) -> Vec<T> {
         }
     }
 
-
-
     new_vector
 }
 
@@ -21,7 +19,6 @@ pub fn solve(input: &str, distance: usize) -> u32 {
     let zipped = parsed.iter().zip(shifted.iter());
 
     let sum = zipped.fold(0, |acc, (x, y)| if x == y { acc + x } else { acc });
-
 
     sum
 }
