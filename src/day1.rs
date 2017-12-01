@@ -12,17 +12,13 @@ fn shift<T: Copy>(vec: &Vec<T>, distance: usize) -> Vec<T> {
     new_vector
 }
 
-
 pub fn solve(input: &str, distance: usize) -> u32 {
     let parsed = input.chars().map(|v| v.to_digit(10).unwrap()).collect::<Vec<u32>>();
     let shifted = shift(&parsed, distance);
     let zipped = parsed.iter().zip(shifted.iter());
 
-    let sum = zipped.fold(0, |acc, (x, y)| if x == y { acc + x } else { acc });
-
-    sum
+    zipped.fold(0, |acc, (x, y)| if x == y { acc + x } else { acc })
 }
-
 
 #[cfg(test)]
 mod tests {
