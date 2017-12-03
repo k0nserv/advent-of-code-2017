@@ -4,3 +4,4 @@
 
 + [Day 1](src/day1.rs)
 + [Day 2](src/day2.rs)
++ [Day 3](src/day3.rs)
