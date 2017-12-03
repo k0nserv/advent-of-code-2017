@@ -1,5 +1,7 @@
 mod day1;
 mod day2;
+mod day3;
+mod grid;
 
 #[cfg(test)]
 mod tests {
@@ -37,5 +39,13 @@ mod tests {
 
         assert_eq!(solve(input, &row_data_min_max), 53460);
         assert_eq!(solve(input, &row_data_evenly_divisible), 282);
+    }
+
+    #[test]
+    fn solve_day3() {
+        use day3::{solve, solve_star_two};
+
+        assert_eq!(solve(312051), 430);
+        assert_eq!(solve_star_two(312051), 312453);
     }
 }
