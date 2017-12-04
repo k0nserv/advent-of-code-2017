@@ -1,13 +1,18 @@
 use std::iter::FromIterator;
 use std::collections::HashSet;
 
-trait Validator {
+pub trait Validator {
+    fn new() -> Self;
     fn is_valid(&self, phrase: &Vec<&str>) -> bool;
 }
 
-struct UniquenessValidator {}
+pub struct UniquenessValidator {}
 
 impl Validator for UniquenessValidator {
+    fn new() -> Self {
+        UniquenessValidator {}
+    }
+
     fn is_valid(&self, phrase: &Vec<&str>) -> bool {
         let len = &phrase.len();
         let mut set: HashSet<&str> = HashSet::with_capacity(*len);
@@ -17,9 +22,13 @@ impl Validator for UniquenessValidator {
     }
 }
 
-struct AnagramValidator {}
+pub struct AnagramValidator {}
 
 impl Validator for AnagramValidator {
+    fn new() -> Self {
+        AnagramValidator {}
+    }
+
     fn is_valid(&self, phrase: &Vec<&str>) -> bool {
         let sorted = phrase.iter().map(|&word| {
                                            let mut chars = word.chars().collect::<Vec<char>>();
@@ -45,20 +54,9 @@ pub fn parse(input: &str) -> Vec<Vec<&str>> {
         .collect()
 }
 
-pub fn solve_star_one(input: &str) -> u32 {
+pub fn solve<T: Validator>(input: &str) -> u32 {
     let phrases = parse(input);
-    let validator = UniquenessValidator {};
-
-    phrases.iter()
-        .map(|phrase| validator.is_valid(phrase))
-        .filter(|&valid| valid)
-        .collect::<Vec<bool>>()
-        .len() as u32
-}
-
-pub fn solve_star_two(input: &str) -> u32 {
-    let phrases = parse(input);
-    let validator = AnagramValidator {};
+    let validator = T::new();
 
     phrases.iter()
         .map(|phrase| validator.is_valid(phrase))
@@ -69,7 +67,7 @@ pub fn solve_star_two(input: &str) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use super::{solve_star_one, solve_star_two};
+    use super::{solve, AnagramValidator, UniquenessValidator};
 
     #[test]
     fn test_cases_star_one() {
@@ -78,7 +76,7 @@ mod tests {
             aa bb cc dd aa
             aa bb cc dd aaa
             ";
-        assert_eq!(solve_star_one(input), 2);
+        assert_eq!(solve::<UniquenessValidator>(input), 2);
     }
 
     #[test]
@@ -90,6 +88,6 @@ mod tests {
             iiii oiii ooii oooi oooo
             oiii ioii iioi iiio
             ";
-        assert_eq!(solve_star_two(input), 3);
+        assert_eq!(solve::<AnagramValidator>(input), 3);
     }
 }

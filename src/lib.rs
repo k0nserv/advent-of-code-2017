@@ -54,13 +54,13 @@ mod tests {
         use std::fs::File;
         use std::io::Read;
 
-        use day4::{solve_star_one, solve_star_two};
+        use day4::{solve, UniquenessValidator, AnagramValidator};
 
         let mut input = String::new();
         let mut f = File::open("day4.txt").expect("Unable to open file");
         f.read_to_string(&mut input).expect("Unable to read string");
 
-        assert_eq!(solve_star_one(&input), 451);
-        assert_eq!(solve_star_two(&input), 223);
+        assert_eq!(solve::<UniquenessValidator>(&input), 451);
+        assert_eq!(solve::<AnagramValidator>(&input), 223);
     }
 }
