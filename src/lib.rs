@@ -2,10 +2,10 @@ mod day1;
 mod day2;
 mod day3;
 mod grid;
+mod day4;
 
 #[cfg(test)]
 mod tests {
-
     #[test]
     fn solve_day1() {
         use day1::solve;
@@ -47,5 +47,19 @@ mod tests {
 
         assert_eq!(solve(312051), 430);
         assert_eq!(solve_star_two(312051), 312453);
+    }
+
+    #[test]
+    fn solve_day4() {
+        use std::fs::File;
+        use std::io::Read;
+
+        use day4::{solve};
+
+        let mut input = String::new();
+        let mut f = File::open("day4.txt").expect("Unable to open file");
+        f.read_to_string(&mut input).expect("Unable to read string");
+
+        assert_eq!(solve(&input), 451);
     }
 }
