@@ -31,8 +31,16 @@ impl Grid {
 
     pub fn sum_of_neighbours(&self, index: (i32, i32)) -> u32 {
         let actual_index = self.index_origin(index);
-        let neighbours: [(i32, i32); 8] = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1),
-                                           (0, -1), (1, -1)];
+        let neighbours: [(i32, i32); 8] = [
+            (1, 0),
+            (1, 1),
+            (0, 1),
+            (-1, 1),
+            (-1, 0),
+            (-1, -1),
+            (0, -1),
+            (1, -1),
+        ];
 
 
         println!("Neighbour sum for: {:?}", index);
@@ -47,9 +55,11 @@ impl Grid {
                 return acc;
             }
 
-            println!("{} from {:?}",
-                     row[neighbour_index.1 as usize].unwrap_or(0),
-                     neighbour_index);
+            println!(
+                "{} from {:?}",
+                row[neighbour_index.1 as usize].unwrap_or(0),
+                neighbour_index
+            );
             acc + row[neighbour_index.1 as usize].unwrap_or(0)
         })
     }
@@ -67,9 +77,11 @@ impl Index<(i32, i32)> for Grid {
 impl IndexMut<(i32, i32)> for Grid {
     fn index_mut(&mut self, index: (i32, i32)) -> &mut Option<u32> {
         let actual_index = self.index_origin(index);
-        assert!(actual_index.0 < self.rows.len() && actual_index.1 < self.rows[0].len(),
-                "Location: {:?} is out of bounds",
-                actual_index);
+        assert!(
+            actual_index.0 < self.rows.len() && actual_index.1 < self.rows[0].len(),
+            "Location: {:?} is out of bounds",
+            actual_index
+        );
         &mut self.rows[actual_index.0][actual_index.1]
     }
 }

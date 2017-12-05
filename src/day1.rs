@@ -13,7 +13,11 @@ fn shift<T: Copy>(vec: &Vec<T>, distance: usize) -> Vec<T> {
 }
 
 pub fn solve(input: &str, distance: usize) -> u32 {
-    let parsed = input.chars().map(|v| v.to_digit(10).unwrap()).collect::<Vec<u32>>();
+    let parsed = input
+        .trim()
+        .chars()
+        .map(|v| v.to_digit(10).expect("Expected digits"))
+        .collect::<Vec<u32>>();
     let shifted = shift(&parsed, distance);
     let zipped = parsed.iter().zip(shifted.iter());
 
@@ -22,7 +26,7 @@ pub fn solve(input: &str, distance: usize) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use super::{solve, shift};
+    use super::{shift, solve};
 
     #[test]
     fn test_cases_star_one() {

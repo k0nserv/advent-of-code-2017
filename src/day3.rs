@@ -52,10 +52,12 @@ fn find_point(iloc: u32, grid: GridDefinition) -> Point {
     let mut location = Point::new(grid.2 as i32, -(grid.2 as i32));
     let mut current_iloc = grid_side * grid_side;
 
-    let steps = [(grid_side - 1, Point::new(-1, 0)),
-                 (grid_side - 1, Point::new(0, 1)),
-                 (grid_side - 1, Point::new(1, 0)),
-                 (grid_side - 1, Point::new(0, -1))];
+    let steps = [
+        (grid_side - 1, Point::new(-1, 0)),
+        (grid_side - 1, Point::new(0, 1)),
+        (grid_side - 1, Point::new(1, 0)),
+        (grid_side - 1, Point::new(0, -1)),
+    ];
 
     for step in steps.iter() {
         for _ in 0..step.0 {
@@ -121,13 +123,15 @@ pub fn solve_star_two(target: u32) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use super::{Point, solve, solve_star_two, determine_min_grid_size, find_point};
+    use super::{determine_min_grid_size, find_point, solve, solve_star_two, Point};
 
     #[test]
     fn test_manhattan_distance() {
-        let cases = [(Point::new(0, 0), Point::new(0, 0), 0),
-                     (Point::new(0, 0), Point::new(2, 1), 3),
-                     (Point::new(0, 0), Point::new(0, -2), 2)];
+        let cases = [
+            (Point::new(0, 0), Point::new(0, 0), 0),
+            (Point::new(0, 0), Point::new(2, 1), 3),
+            (Point::new(0, 0), Point::new(0, -2), 2),
+        ];
 
         for case in cases.iter() {
             assert_eq!(case.0.manhattan_distance(&case.1), case.2);

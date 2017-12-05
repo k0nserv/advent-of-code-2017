@@ -1,8 +1,10 @@
 fn permutate(values: &Vec<i32>) -> Vec<[i32; 2]> {
-    values.iter()
+    values
+        .iter()
         .enumerate()
         .flat_map(move |(i, &v)| {
-            values.iter()
+            values
+                .iter()
                 .enumerate()
                 .map(move |(ii, &vv)| if i == ii { None } else { Some([v, vv]) })
                 .filter(|x| x.is_some())
@@ -24,13 +26,14 @@ pub fn row_data_evenly_divisible(row: &Vec<i32>) -> i32 {
 }
 
 pub fn solve(input: &str, data_for_row: &Fn(&Vec<i32>) -> i32) -> i32 {
-    input.split("\n")
+    input
+        .split("\n")
         .map(|row| {
-                 row.trim()
-                     .split_whitespace()
-                     .map(|v| v.parse::<i32>().unwrap())
-                     .collect::<Vec<i32>>()
-             })
+            row.trim()
+                .split_whitespace()
+                .map(|v| v.parse::<i32>().unwrap())
+                .collect::<Vec<i32>>()
+        })
         .filter(|row| !row.is_empty())
         .map(|row| data_for_row(&row))
         .sum()
@@ -38,28 +41,36 @@ pub fn solve(input: &str, data_for_row: &Fn(&Vec<i32>) -> i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use super::{solve, row_data_min_max, row_data_evenly_divisible};
+    use super::{row_data_evenly_divisible, row_data_min_max, solve};
 
     #[test]
     fn test_cases_star_one() {
-        assert_eq!(solve("
+        assert_eq!(
+            solve(
+                "
             5 1 9 5
             7 5 3
             2 4 6 8
             ",
-                         &row_data_min_max),
-                   18);
+                &row_data_min_max
+            ),
+            18
+        );
     }
 
     #[test]
     fn test_cases_star_two() {
-        assert_eq!(solve("
+        assert_eq!(
+            solve(
+                "
             5 9 2 8
             9 4 7 3
             3 8 6 5
             ",
-                         &row_data_evenly_divisible),
-                   9);
+                &row_data_evenly_divisible
+            ),
+            9
+        );
     }
 
     #[test]

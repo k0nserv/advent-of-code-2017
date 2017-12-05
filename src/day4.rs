@@ -31,11 +31,11 @@ impl Validator for AnagramValidator {
 
     fn is_valid(&self, phrase: &Vec<&str>) -> bool {
         let sorted = phrase.iter().map(|&word| {
-                                           let mut chars = word.chars().collect::<Vec<char>>();
-                                           chars.sort_by(|a, b| b.cmp(a));
+            let mut chars = word.chars().collect::<Vec<char>>();
+            chars.sort_by(|a, b| b.cmp(a));
 
-                                           String::from_iter(chars)
-                                       });
+            String::from_iter(chars)
+        });
 
         let len = sorted.len();
 
@@ -47,7 +47,8 @@ impl Validator for AnagramValidator {
 }
 
 pub fn parse(input: &str) -> Vec<Vec<&str>> {
-    input.trim()
+    input
+        .trim()
         .split("\n")
         .map(|phrase| phrase.split_whitespace())
         .map(|words| words.collect::<Vec<&str>>())
@@ -58,7 +59,8 @@ pub fn solve<T: Validator>(input: &str) -> u32 {
     let phrases = parse(input);
     let validator = T::new();
 
-    phrases.iter()
+    phrases
+        .iter()
         .map(|phrase| validator.is_valid(phrase))
         .filter(|&valid| valid)
         .collect::<Vec<bool>>()
