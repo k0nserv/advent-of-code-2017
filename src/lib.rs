@@ -47,16 +47,31 @@ mod tests {
 
     #[test]
     fn solve_day4() {
-        use std::fs::File;
-        use std::io::Read;
+        use day4::{solve, AnagramValidator, UniquenessValidator};
 
-        use day4::{solve, UniquenessValidator, AnagramValidator};
 
-        let mut input = String::new();
-        let mut f = File::open("day4.txt").expect("Unable to open file");
-        f.read_to_string(&mut input).expect("Unable to read string");
+        let input = load_file("day4.txt");
 
         assert_eq!(solve::<UniquenessValidator>(&input), 451);
         assert_eq!(solve::<AnagramValidator>(&input), 223);
+    }
+
+    #[test]
+    fn solve_day5() {
+        use day5::solve;
+
+        let input = load_file("day5.txt");
+
+        assert_eq!(solve(&input, |_| 1), 376976);
+        assert_eq!(
+            solve(&input, |i| {
+                if i >= 3 {
+                    -1
+                } else {
+                    1
+                }
+            }),
+            29227751
+        );
     }
 }
