@@ -88,7 +88,11 @@ mod tests {
         assert_eq!(solve(&input), (11137, 1037));
         let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         let time = end - start;
-        println!("Time taken: {}s and {}ns", time.as_secs(), time.subsec_nanos());
+        println!(
+            "Time taken: {}s and {}ns",
+            time.as_secs(),
+            time.subsec_nanos()
+        );
     }
 
     #[test]
@@ -102,6 +106,10 @@ mod tests {
         assert_eq!(solve(&input), ("qibuqqg".to_owned(), 1079));
         let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         let time = end - start;
-        println!("Time taken: {}s and {}ns", time.as_secs(), time.subsec_nanos());
+        println!(
+            "Time taken: {}s and {}ns",
+            time.as_secs(),
+            time.subsec_nanos()
+        );
     }
 }

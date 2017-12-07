@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 
 fn parse(input: &str) -> Vec<u32> {
-    input.split_whitespace().map(|v| v.parse::<u32>().expect("Expected only numbers")).collect()
+    input
+        .split_whitespace()
+        .map(|v| v.parse::<u32>().expect("Expected only numbers"))
+        .collect()
 }
 
 fn identify_next(values: &Vec<u32>) -> (usize, u32) {

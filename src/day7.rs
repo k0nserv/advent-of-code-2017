@@ -9,11 +9,25 @@ struct Program {
 
 impl Program {
     fn new(name: String, weight: u32, children: Vec<Box<Program>>) -> Self {
-        Self { name: name, weight: weight, children: children }
+        Self {
+            name: name,
+            weight: weight,
+            children: children,
+        }
     }
 
-    fn build(data: &(&str, u32, HashSet<&str>), treeData: &HashMap<String, (&str, u32, HashSet<&str>)>) -> Box<Program> {
-        Box::new(Program::new(data.0.to_owned(), data.1, data.2.iter().map(|name| Program::build(treeData.get(name.to_owned()).unwrap(), treeData)).collect()))
+    fn build(
+        data: &(&str, u32, HashSet<&str>),
+        treeData: &HashMap<String, (&str, u32, HashSet<&str>)>,
+    ) -> Box<Program> {
+        Box::new(Program::new(
+            data.0.to_owned(),
+            data.1,
+            data.2
+                .iter()
+                .map(|name| Program::build(treeData.get(name.to_owned()).unwrap(), treeData))
+                .collect(),
+        ))
     }
 
     fn weight(&self, include_self: bool) -> u32 {
@@ -22,11 +36,17 @@ impl Program {
             sum += self.weight;
         }
 
-        sum + self.children.iter().fold(0, |acc, child| acc + child.weight(include_self))
+        sum
+            + self.children
+                .iter()
+                .fold(0, |acc, child| acc + child.weight(include_self))
     }
 
     fn weight_required(&self, target_weight: u32) -> u32 {
-        let child_weights = self.children.iter().map(|child| child.weight(true)).collect::<Vec<u32>>();
+        let child_weights = self.children
+            .iter()
+            .map(|child| child.weight(true))
+            .collect::<Vec<u32>>();
         let balanced = child_weights.iter().all(|x| *x == child_weights[0]);
 
         if balanced {
@@ -42,13 +62,24 @@ impl Program {
 
         let mut count_vec: Vec<_> = counts.iter().collect();
         count_vec.sort_by(|a, b| b.1.cmp(a.1));
-        let index_of_unbalanced_child = child_weights.clone().iter().position(|&v| v == *count_vec.iter().last().unwrap().0).unwrap();
+        let index_of_unbalanced_child = child_weights
+            .clone()
+            .iter()
+            .position(|&v| v == *count_vec.iter().last().unwrap().0)
+            .unwrap();
 
         return self.children[index_of_unbalanced_child].weight_required(*count_vec[0].0);
     }
 
     fn write_tree(&self, f: &mut fmt::Formatter, depth: usize) -> fmt::Result {
-        write!(f, "{}{} ({} - {})\n", "  ".repeat(depth), self.name, self.weight, self.weight(true));
+        write!(
+            f,
+            "{}{} ({} - {})\n",
+            "  ".repeat(depth),
+            self.name,
+            self.weight,
+            self.weight(true)
+        );
 
         self.children.iter().for_each(|child| {
             child.write_tree(f, depth + 1);
@@ -65,21 +96,34 @@ impl fmt::Debug for Program {
 }
 
 fn parse<'a>(input: &'a str) -> Box<Program> {
-    let tree_map = input.trim().lines().map(|row| {
-        let words = row.trim().split_whitespace().collect::<Vec<&str>>();
-        let name = words[0];
-        let weight = words[1].trim_matches(|c: char| !c.is_numeric()).parse::<u32>().expect("Expected numeric weight");
-        let mut children = HashSet::new();
+    let tree_map = input
+        .trim()
+        .lines()
+        .map(|row| {
+            let words = row.trim().split_whitespace().collect::<Vec<&str>>();
+            let name = words[0];
+            let weight = words[1]
+                .trim_matches(|c: char| !c.is_numeric())
+                .parse::<u32>()
+                .expect("Expected numeric weight");
+            let mut children = HashSet::new();
 
-        if words.len() > 3 {
-            children = words[3..].iter().map(|program| program.trim_matches(',')).collect::<HashSet<&str>>();
-        }
+            if words.len() > 3 {
+                children = words[3..]
+                    .iter()
+                    .map(|program| program.trim_matches(','))
+                    .collect::<HashSet<&str>>();
+            }
 
 
-        (name.to_owned(), (name, weight, children))
-    }).collect::<HashMap<_, _>>();
+            (name.to_owned(), (name, weight, children))
+        })
+        .collect::<HashMap<_, _>>();
     let mut root = tree_map.keys().collect::<HashSet<_>>();
-    let childs_of_other = tree_map.values().flat_map(|&(_, _, ref children)| children.clone()).collect::<HashSet<&str>>();
+    let childs_of_other = tree_map
+        .values()
+        .flat_map(|&(_, _, ref children)| children.clone())
+        .collect::<HashSet<&str>>();
 
     for node in tree_map.values() {
         if childs_of_other.contains(node.0) {
