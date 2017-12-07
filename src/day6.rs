@@ -19,7 +19,7 @@ fn identify_next(values: &Vec<u32>) -> (usize, u32) {
 }
 
 fn key(values: &Vec<u32>) -> String {
-    values.iter().map(|v| v.to_string()).collect::<Vec<String>>().join("")
+    values.iter().map(|v| v.to_string()).collect::<Vec<String>>().join(" ")
 }
 
 pub fn solve(input: &str) -> (u32, u32) {
