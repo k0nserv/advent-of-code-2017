@@ -27,8 +27,8 @@ pub fn solve(input: &str) -> (u32, u32) {
 
     let input_len = parsed.len();
     let mut current_memory = parsed;
-    let mut seen: HashMap<String, u32> = HashMap::new();
-    seen.insert(key(&current_memory), 0);
+    let mut seen: HashMap<Vec<u32>, u32> = HashMap::new();
+    seen.insert(current_memory.clone(), 0);
     let mut cycles = 0;
     let mut loop_size = 0;
 
@@ -46,13 +46,11 @@ pub fn solve(input: &str) -> (u32, u32) {
         }
         cycles += 1;
 
-        let key = key(&current_memory);
-
-        if seen.contains_key(&key) {
-            loop_size = cycles - seen.get(&key).unwrap();
+        if let Some(v) = seen.get(&current_memory) {
+            loop_size = cycles - v;
             break;
         }
-        seen.insert(key, cycles);
+        seen.insert(current_memory.clone(), cycles);
     }
 
 
