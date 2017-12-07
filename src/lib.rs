@@ -5,6 +5,7 @@ mod grid;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 
 #[cfg(test)]
 mod tests {
@@ -85,6 +86,20 @@ mod tests {
 
         let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         assert_eq!(solve(&input), (11137, 1037));
+        let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+        let time = end - start;
+        println!("Time taken: {}s and {}ns", time.as_secs(), time.subsec_nanos());
+    }
+
+    #[test]
+    fn solve_day7() {
+        use day7::solve;
+        use std::time::{SystemTime, UNIX_EPOCH};
+
+        let input = load_file("day7.txt");
+
+        let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+        assert_eq!(solve(&input), ("qibuqqg".to_owned(), 1079));
         let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         let time = end - start;
         println!("Time taken: {}s and {}ns", time.as_secs(), time.subsec_nanos());
