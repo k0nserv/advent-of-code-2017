@@ -8,6 +8,7 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
 #[cfg(test)]
 mod tests {
@@ -149,5 +150,15 @@ mod tests {
             time.as_secs(),
             time.subsec_nanos()
         );
+    }
+
+    #[test]
+    fn solve_day10() {
+        use day10::{solve, solve2};
+
+        let input = "106,16,254,226,55,2,1,166,177,247,93,0,255,228,60,36";
+
+        assert_eq!(solve(&input, 256), 11413);
+        assert_eq!(solve2(&input, 256, 64), "7adfd64c2a03a4968cf708d1b7fd418d");
     }
 }
