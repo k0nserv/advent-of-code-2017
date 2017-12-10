@@ -18,14 +18,14 @@ impl Program {
 
     fn build(
         data: &(&str, u32, HashSet<&str>),
-        treeData: &HashMap<String, (&str, u32, HashSet<&str>)>,
+        tree_data: &HashMap<String, (&str, u32, HashSet<&str>)>,
     ) -> Box<Program> {
         Box::new(Program::new(
             data.0.to_owned(),
             data.1,
             data.2
                 .iter()
-                .map(|name| Program::build(treeData.get(name.to_owned()).unwrap(), treeData))
+                .map(|name| Program::build(tree_data.get(name.to_owned()).unwrap(), tree_data))
                 .collect(),
         ))
     }
