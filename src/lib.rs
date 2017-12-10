@@ -83,73 +83,37 @@ mod tests {
     #[test]
     fn solve_day6() {
         use day6::solve;
-        use std::time::{SystemTime, UNIX_EPOCH};
 
         let input = load_file("day6.txt");
 
-        let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         assert_eq!(solve(&input), (11137, 1037));
-        let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-        let time = end - start;
-        println!(
-            "Time taken: {}s and {}ns",
-            time.as_secs(),
-            time.subsec_nanos()
-        );
     }
 
     #[test]
     fn solve_day7() {
         use day7::solve;
-        use std::time::{SystemTime, UNIX_EPOCH};
 
         let input = load_file("day7.txt");
 
-        let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         assert_eq!(solve(&input), ("qibuqqg".to_owned(), 1079));
-        let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-        let time = end - start;
-        println!(
-            "Time taken: {}s and {}ns",
-            time.as_secs(),
-            time.subsec_nanos()
-        );
     }
 
     #[test]
     fn solve_day8() {
         use day8::solve;
-        use std::time::{SystemTime, UNIX_EPOCH};
 
         let input = load_file("day8.txt");
 
-        let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         assert_eq!(solve(&input), (2971, 4254));
-        let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-        let time = end - start;
-        println!(
-            "Time taken: {}s and {}ns",
-            time.as_secs(),
-            time.subsec_nanos()
-        );
     }
 
     #[test]
     fn solve_day9() {
         use day9::solve;
-        use std::time::{SystemTime, UNIX_EPOCH};
 
         let input = load_file("day9.txt");
 
-        let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         assert_eq!(solve(&input), (17390, 7825));
-        let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-        let time = end - start;
-        println!(
-            "Time taken: {}s and {}ns",
-            time.as_secs(),
-            time.subsec_nanos()
-        );
     }
 
     #[test]
