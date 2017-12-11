@@ -9,6 +9,7 @@ mod day7;
 mod day8;
 mod day9;
 mod day10;
+mod day11;
 
 #[cfg(test)]
 mod tests {
@@ -124,5 +125,15 @@ mod tests {
 
         assert_eq!(solve(&input, 256), 11413);
         assert_eq!(solve2(&input, 256, 64), "7adfd64c2a03a4968cf708d1b7fd418d");
+    }
+
+    #[test]
+    fn solve_day11() {
+        use day11::{solve, solve2};
+
+        let input = load_file("day11.txt");
+
+        assert_eq!(solve(&input), 675);
+        assert_eq!(solve2(&input), 1424);
     }
 }
