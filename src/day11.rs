@@ -31,9 +31,7 @@ struct Location {
 
 impl Location {
     fn new(x: i32, y: i32, z: i32) -> Self {
-        Location {
-            x, y, z
-        }
+        Location { x, y, z }
     }
 
     fn origin() -> Self {
@@ -46,10 +44,10 @@ impl Location {
         let z = self.z;
 
         match direction {
-            &Direction::N => Location::new(x, y + 1, z -1),
+            &Direction::N => Location::new(x, y + 1, z - 1),
             &Direction::NE => Location::new(x + 1, y, z - 1),
             &Direction::NW => Location::new(x - 1, y + 1, z),
-            &Direction::S => Location::new(x, y -1, z + 1),
+            &Direction::S => Location::new(x, y - 1, z + 1),
             &Direction::SE => Location::new(x + 1, y - 1, z),
             &Direction::SW => Location::new(x - 1, y, z + 1),
         }
@@ -67,7 +65,10 @@ pub fn solve(input: &str) -> i32 {
         .map(|s| Direction::parse(s.trim()).expect(&format!("Unparsable direction {}", s)))
         .collect::<Vec<_>>();
 
-    let loc = steps.iter().fold(Location::origin(), |acc, step| acc.mv(step));
+    let loc =
+        steps
+            .iter()
+            .fold(Location::origin(), |acc, step| acc.mv(step));
 
     loc.manhattan_distance(&Location::origin())
 }
@@ -80,16 +81,19 @@ pub fn solve2(input: &str) -> i32 {
         .collect::<Vec<_>>();
 
     let origin = Location::origin();
-    steps.iter().fold((Location::origin(), 0), |(acc, max_distance), step| {
-        let distance = origin.manhattan_distance(&acc);
-        let new_max = if distance > max_distance {
-            distance
-        } else {
-            max_distance
-        };
+    steps
+        .iter()
+        .fold((Location::origin(), 0), |(acc, max_distance), step| {
+            let distance = origin.manhattan_distance(&acc);
+            let new_max = if distance > max_distance {
+                distance
+            } else {
+                max_distance
+            };
 
-        (acc.mv(step), new_max)
-    }).1
+            (acc.mv(step), new_max)
+        })
+        .1
 }
 
 #[cfg(test)]
@@ -106,11 +110,29 @@ mod tests {
 
     #[test]
     fn test_mv() {
-        assert_eq!(Location::origin().mv(&Direction::N), Location::new(0, 1, -1));
-        assert_eq!(Location::origin().mv(&Direction::NE), Location::new(1, 0, -1));
-        assert_eq!(Location::origin().mv(&Direction::NW), Location::new(-1, 1, 0));
-        assert_eq!(Location::origin().mv(&Direction::S), Location::new(0, -1, 1));
-        assert_eq!(Location::origin().mv(&Direction::SE), Location::new(1, -1, 0));
-        assert_eq!(Location::origin().mv(&Direction::SW), Location::new(-1, 0, 1));
+        assert_eq!(
+            Location::origin().mv(&Direction::N),
+            Location::new(0, 1, -1)
+        );
+        assert_eq!(
+            Location::origin().mv(&Direction::NE),
+            Location::new(1, 0, -1)
+        );
+        assert_eq!(
+            Location::origin().mv(&Direction::NW),
+            Location::new(-1, 1, 0)
+        );
+        assert_eq!(
+            Location::origin().mv(&Direction::S),
+            Location::new(0, -1, 1)
+        );
+        assert_eq!(
+            Location::origin().mv(&Direction::SE),
+            Location::new(1, -1, 0)
+        );
+        assert_eq!(
+            Location::origin().mv(&Direction::SW),
+            Location::new(-1, 0, 1)
+        );
     }
 }

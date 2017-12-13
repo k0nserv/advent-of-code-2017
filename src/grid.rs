@@ -42,7 +42,6 @@ impl Grid {
             (1, -1),
         ];
 
-
         println!("Neighbour sum for: {:?}", index);
         neighbours.iter().fold(0, |acc, &(x, y)| {
             let neighbour_index = ((actual_index.0 as i32) + x, (actual_index.1 as i32) + y);

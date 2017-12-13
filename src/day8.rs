@@ -189,7 +189,6 @@ fn parse(input: &str) -> Vec<Box<Expression>> {
         .collect()
 }
 
-
 pub fn solve(input: &str) -> (i32, i32) {
     let program = parse(input);
     let mut registers = Registers::new();

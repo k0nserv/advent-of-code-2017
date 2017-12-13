@@ -64,7 +64,6 @@ impl List {
     }
 }
 
-
 pub fn solve(input: &str, size: usize) -> u16 {
     let lengths = input.trim().split(',').map(|v| {
         v.trim()
@@ -76,7 +75,6 @@ pub fn solve(input: &str, size: usize) -> u16 {
     for length in lengths {
         list = list.apply_length(length);
     }
-
 
     list.head_product()
 }
@@ -97,7 +95,6 @@ pub fn solve2(input: &str, size: usize, rounds: usize) -> String {
             list = list.apply_length(*length);
         }
     }
-
 
     list.dense_hash()
 }

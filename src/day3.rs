@@ -69,17 +69,14 @@ fn find_point(iloc: u32, grid: GridDefinition) -> Point {
         }
     }
 
-
     assert!(false, "Should not be here");
     Point::new(0, 0)
 }
-
 
 pub fn solve(iloc: u32) -> u32 {
     let origin = Point::new(0, 0);
     let grid = determine_min_grid_size(iloc);
     let loc = find_point(iloc, grid);
-
 
     loc.manhattan_distance(&origin)
 }

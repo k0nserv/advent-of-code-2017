@@ -115,7 +115,6 @@ fn parse<'a>(input: &'a str) -> Box<Program> {
                     .collect::<HashSet<&str>>();
             }
 
-
             (name.to_owned(), (name, weight, children))
         })
         .collect::<HashMap<_, _>>();

@@ -52,7 +52,6 @@ pub fn solve(input: &str) -> (u32, u32) {
         seen.insert(current_memory.clone(), cycles);
     }
 
-
     (cycles, loop_size)
 }
 

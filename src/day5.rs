@@ -32,15 +32,6 @@ mod tests {
 
     #[test]
     fn test_cases_star_two() {
-        assert_eq!(
-            solve("0 3 0 1 -3", |i| {
-                if i >= 3 {
-                    -1
-                } else {
-                    1
-                }
-            }),
-            10
-        );
+        assert_eq!(solve("0 3 0 1 -3", |i| if i >= 3 { -1 } else { 1 }), 10);
     }
 }

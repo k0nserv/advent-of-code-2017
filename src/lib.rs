@@ -25,7 +25,6 @@ mod tests {
         input
     }
 
-
     #[test]
     fn solve_day1() {
         use day1::solve;
@@ -56,7 +55,6 @@ mod tests {
     fn solve_day4() {
         use day4::{solve, AnagramValidator, UniquenessValidator};
 
-
         let input = load_file("day4.txt");
 
         assert_eq!(solve::<UniquenessValidator>(&input), 451);
@@ -70,16 +68,7 @@ mod tests {
         let input = load_file("day5.txt");
 
         assert_eq!(solve(&input, |_| 1), 376976);
-        assert_eq!(
-            solve(&input, |i| {
-                if i >= 3 {
-                    -1
-                } else {
-                    1
-                }
-            }),
-            29227751
-        );
+        assert_eq!(solve(&input, |i| if i >= 3 { -1 } else { 1 }), 29227751);
     }
 
     #[test]

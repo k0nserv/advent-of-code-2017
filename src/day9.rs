@@ -27,7 +27,6 @@ fn change(score: i32, in_garbage: bool, amount: i32) -> i32 {
     score + amount
 }
 
-
 pub fn solve(input: &str) -> (i32, i32) {
     let mut state = State::new();
 
