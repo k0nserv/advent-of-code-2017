@@ -11,6 +11,7 @@ mod day9;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
 
 #[cfg(test)]
 mod tests {
@@ -135,5 +136,15 @@ mod tests {
 
         assert_eq!(solve(&input), 134);
         assert_eq!(solve2(&input), 134);
+    }
+
+    #[test]
+    fn solve_day13() {
+        use day13::{solve, solve2};
+
+        let input = load_file("day13.txt");
+
+        assert_eq!(solve(&input), 1476);
+        assert_eq!(solve2(&input), 3937334);
     }
 }
