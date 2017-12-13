@@ -13,3 +13,4 @@
 + [Day 9](src/day9.rs)
 + [Day 10](src/day10.rs)
 + [Day 11](src/day11.rs)
++ [Day 12](src/day12.rs)
