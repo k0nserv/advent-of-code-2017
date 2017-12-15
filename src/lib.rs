@@ -153,10 +153,11 @@ mod tests {
 
     #[test]
     fn solve_day14() {
-        use day14::solve;
+        use day14::{solve, solve2};
 
         let input = "hwlqcszp";
 
         assert_eq!(solve(&input), 8304);
+        assert_eq!(solve2(&input), 0);
     }
 }
