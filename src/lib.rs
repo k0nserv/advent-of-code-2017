@@ -1,3 +1,5 @@
+#![feature(i128_type)] // For day 14
+
 mod day1;
 mod day2;
 mod day3;
@@ -12,6 +14,7 @@ mod day10;
 mod day11;
 mod day12;
 mod day13;
+mod day14;
 
 #[cfg(test)]
 mod tests {
@@ -146,5 +149,14 @@ mod tests {
 
         assert_eq!(solve(&input), 1476);
         assert_eq!(solve2(&input), 3937334);
+    }
+
+    #[test]
+    fn solve_day14() {
+        use day14::solve;
+
+        let input = "hwlqcszp";
+
+        assert_eq!(solve(&input), 8304);
     }
 }

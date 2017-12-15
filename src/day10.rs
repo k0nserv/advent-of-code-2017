@@ -64,6 +64,21 @@ impl List {
     }
 }
 
+pub fn knot_hash(input: Vec<usize>, size: usize, rounds: usize) -> String {
+    let suffix = [17, 31, 73, 47, 23];
+    let mut lengths = input.clone();
+    lengths.extend(&suffix);
+    let mut list = List::new(size);
+
+    for _ in (0..rounds) {
+        for length in lengths.iter() {
+            list = list.apply_length(*length);
+        }
+    }
+
+    list.dense_hash()
+}
+
 pub fn solve(input: &str, size: usize) -> u16 {
     let lengths = input.trim().split(',').map(|v| {
         v.trim()
@@ -80,23 +95,14 @@ pub fn solve(input: &str, size: usize) -> u16 {
 }
 
 pub fn solve2(input: &str, size: usize, rounds: usize) -> String {
-    let suffix = [17, 31, 73, 47, 23];
     let mut lengths = input
         .trim()
         .chars()
         .map(|c| c as u8)
         .map(|c| c as usize)
         .collect::<Vec<usize>>();
-    lengths.extend(&suffix);
-    let mut list = List::new(size);
 
-    for _ in (0..rounds) {
-        for length in lengths.iter() {
-            list = list.apply_length(*length);
-        }
-    }
-
-    list.dense_hash()
+    knot_hash(lengths, size, rounds)
 }
 
 #[cfg(test)]
