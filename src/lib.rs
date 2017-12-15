@@ -158,6 +158,6 @@ mod tests {
         let input = "hwlqcszp";
 
         assert_eq!(solve(&input), 8304);
-        assert_eq!(solve2(&input), 0);
+        assert_eq!(solve2(&input), 1018);
     }
 }

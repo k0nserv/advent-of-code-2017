@@ -58,7 +58,6 @@ pub fn solve2(input: &str) -> u32 {
         let clone = accounted_for.clone();
         let next = clone.iter().find(|&(_, &v)| v == false);
 
-
         let mut to_visit = VecDeque::<(usize, usize)>::new();
         to_visit.push_back(*next.unwrap().0);
 
@@ -72,7 +71,9 @@ pub fn solve2(input: &str) -> u32 {
                     return;
                 }
 
-                if let Some(neighbour) = accounted_for.get(&(neighbour_loc.0 as usize, neighbour_loc.1 as usize)) {
+                if let Some(neighbour) =
+                    accounted_for.get(&(neighbour_loc.0 as usize, neighbour_loc.1 as usize))
+                {
                     if *neighbour == false {
                         to_visit.push_back((neighbour_loc.0 as usize, neighbour_loc.1 as usize));
                     }
