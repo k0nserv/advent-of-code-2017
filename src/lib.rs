@@ -1,5 +1,7 @@
 #![feature(i128_type)] // For day 14
 
+use std::time::{SystemTime, UNIX_EPOCH};
+
 mod day1;
 mod day2;
 mod day3;
@@ -15,9 +17,26 @@ mod day11;
 mod day12;
 mod day13;
 mod day14;
+mod day15;
+
+fn time<F>(closure: F)
+where
+    F: Fn(),
+{
+    let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+    closure();
+    let end = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+    let time = end - start;
+    println!(
+        "Time taken: {}s and {}ns",
+        time.as_secs(),
+        time.subsec_nanos()
+    );
+}
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::fs::File;
     use std::io::Read;
 
@@ -159,5 +178,13 @@ mod tests {
 
         assert_eq!(solve(&input), 8304);
         assert_eq!(solve2(&input), 1018);
+    }
+
+    #[test]
+    fn solve_day15() {
+        use day15::{solve, solve2};
+
+        time(|| assert_eq!(solve(783, 325), 650));
+        time(|| assert_eq!(solve2(783, 325), 336));
     }
 }
