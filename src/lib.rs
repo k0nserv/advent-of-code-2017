@@ -18,6 +18,7 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
 
 fn time<F>(closure: F)
 where
@@ -186,5 +187,17 @@ mod tests {
 
         time(|| assert_eq!(solve(783, 325), 650));
         time(|| assert_eq!(solve2(783, 325), 336));
+    }
+
+    #[test]
+    fn solve_day16() {
+        use day16::solve;
+
+        let input = load_file("day16.txt");
+
+        assert_eq!(solve(&input, 16, 1), "fgmobeaijhdpkcln");
+
+        // Cycles at 24 iteratiors. 1_000_000_000 % 24 == 16
+        assert_eq!(solve(&input, 16, 16), "fgmobeaijhdpkcln");
     }
 }
