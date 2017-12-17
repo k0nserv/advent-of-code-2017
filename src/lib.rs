@@ -19,6 +19,7 @@ mod day13;
 mod day14;
 mod day15;
 mod day16;
+mod day17;
 
 fn time<F>(closure: F)
 where
@@ -199,5 +200,13 @@ mod tests {
 
         // Cycles at 24 iteratiors. 1_000_000_000 % 24 == 16
         assert_eq!(solve(&input, 16, 16), "fgmobeaijhdpkcln");
+    }
+
+    #[test]
+    fn solve_day17() {
+        use day17::{solve, solve2};
+
+        assert_eq!(solve(304), 1173);
+        assert_eq!(solve2(304), 1930815);
     }
 }
