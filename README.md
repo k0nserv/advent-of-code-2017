@@ -20,3 +20,4 @@
 + [Day 16](src/day16.rs)
 + [Day 17](src/day17.rs)
 + [Day 18](src/day18.rs) - Part two not done due to excessive scope creep.
++ [Day 19](src/day19.rs)

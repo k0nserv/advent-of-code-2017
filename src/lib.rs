@@ -21,6 +21,7 @@ mod day15;
 mod day16;
 mod day17;
 mod day18;
+mod day19;
 
 fn time<F>(closure: F)
 where
@@ -217,5 +218,13 @@ mod tests {
         let input = load_file("day18.txt");
 
         assert_eq!(solve(&input), 3188);
+    }
+
+    #[test]
+    fn solve_day19() {
+        use day19::solve;
+        let input = load_file("day19.txt");
+
+        assert_eq!(solve(&input), (String::from("MKXOIHZNBL"), 17872));
     }
 }
