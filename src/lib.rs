@@ -1,17 +1,6 @@
-#![feature(i128_type)] // For day 14
-
 use std::time::{SystemTime, UNIX_EPOCH};
 
 mod day1;
-mod day2;
-mod day3;
-mod grid;
-mod day4;
-mod day5;
-mod day6;
-mod day7;
-mod day8;
-mod day9;
 mod day10;
 mod day11;
 mod day12;
@@ -22,6 +11,15 @@ mod day16;
 mod day17;
 mod day18;
 mod day19;
+mod day2;
+mod day3;
+mod day4;
+mod day5;
+mod day6;
+mod day7;
+mod day8;
+mod day9;
+mod grid;
 
 fn time<F>(closure: F)
 where
@@ -161,7 +159,7 @@ mod tests {
         let input = load_file("day12.txt");
 
         assert_eq!(solve(&input), 134);
-        assert_eq!(solve2(&input), 134);
+        assert_eq!(solve2(&input), 193);
     }
 
     #[test]
@@ -201,7 +199,7 @@ mod tests {
         assert_eq!(solve(&input, 16, 1), "fgmobeaijhdpkcln");
 
         // Cycles at 24 iteratiors. 1_000_000_000 % 24 == 16
-        assert_eq!(solve(&input, 16, 16), "fgmobeaijhdpkcln");
+        assert_eq!(solve(&input, 16, 16), "lgmkacfjbopednhi");
     }
 
     #[test]
