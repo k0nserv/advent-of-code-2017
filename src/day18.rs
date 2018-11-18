@@ -1,4 +1,6 @@
-use std::collections::HashMap;
+use std::cell::RefCell;
+use std::collections::{HashMap, VecDeque};
+use std::rc::Rc;
 
 type Register = char;
 
@@ -100,7 +102,158 @@ impl Instruction {
     }
 }
 
-struct Program {
+type Registers = HashMap<Register, i64>;
+
+fn get_register(registers: &Registers, register: &Register) -> i64 {
+    *registers.get(register).unwrap_or(&0)
+}
+
+fn set_register(registers: &mut Registers, register: &Register, value: &Destination) {
+    let v = get_value(registers, value);
+    registers.insert(register.clone(), v);
+}
+
+fn get_value(registers: &Registers, value: &Destination) -> i64 {
+    match value {
+        &Destination::Value(v) => v,
+        &Destination::Register(r) => *registers.get(&r).unwrap_or(&0),
+    }
+}
+
+struct Program2 {
+    instructions: Vec<Instruction>,
+    ip: usize,
+    registers: HashMap<Register, i64>,
+    id: usize,
+    queue: VecDeque<i64>,
+    sibling_program: Option<Rc<RefCell<Program2>>>,
+    send_counter: usize,
+}
+
+impl Program2 {
+    fn new(source: &str, id: usize) -> Result<Self, String> {
+        let instructions = source
+            .trim()
+            .lines()
+            .map(|line| Instruction::parse(line))
+            .collect::<Vec<_>>();
+        if let Some(Err(error)) = instructions
+            .clone()
+            .into_iter()
+            .find(|instruction| instruction.is_err())
+        {
+            return Err(format!(
+                "Failed to build program due to source code error: {}",
+                error
+            ));
+        }
+        let mut hash_map = HashMap::new();
+        hash_map.insert('p', id as i64);
+
+        Ok(Self {
+            id,
+            instructions: instructions.into_iter().map(|i| i.unwrap()).collect(),
+            ip: 0,
+            registers: hash_map,
+            queue: VecDeque::new(),
+            sibling_program: None,
+            send_counter: 0,
+        })
+    }
+
+    fn current_instruction(&self) -> Instruction {
+        self.instructions[self.ip].clone()
+    }
+
+    fn set_sibling(&mut self, sibling: Rc<RefCell<Program2>>) {
+        self.sibling_program = Some(sibling);
+    }
+
+    fn is_deadlocked(&self) -> bool {
+        match self.current_instruction() {
+            Instruction::Rcv(_) => self.queue.is_empty(),
+            _ => false,
+        }
+    }
+
+    fn add_to_queue(&mut self, value: i64) {
+        self.queue.push_back(value);
+    }
+
+    fn send(&mut self, destination: Destination) {
+        println!("Sending {:?} in program {}", destination, self.id);
+        if self.id == 1 {
+            self.send_counter += 1;
+        }
+
+        match &self.sibling_program {
+            Some(p) => p
+                .borrow_mut()
+                .add_to_queue(get_value(&self.registers, &destination)),
+            None => (),
+        };
+        ()
+    }
+
+    fn tick(&mut self) {
+        let current_instruction = self.current_instruction();
+        let mut ip_offset = 1;
+        // println!(
+        //     "Current instruction {:?} at ip {} in program {}",
+        //     current_instruction, self.ip, self.id
+        // );
+
+        match current_instruction {
+            Instruction::Set(r, v) => set_register(&mut self.registers, &r, &v),
+            Instruction::Add(r, v) => {
+                let new_value = Destination::Value(
+                    get_register(&mut self.registers, &r) + get_value(&self.registers, &v),
+                );
+                set_register(&mut self.registers, &r, &new_value);
+            }
+            Instruction::Mul(r, v) => {
+                let new_value = Destination::Value(
+                    get_register(&self.registers, &r) * get_value(&self.registers, &v),
+                );
+                set_register(&mut self.registers, &r, &new_value);
+            }
+            Instruction::Mod(r, v) => {
+                let new_value = Destination::Value(
+                    get_register(&self.registers, &r) % get_value(&self.registers, &v),
+                );
+                set_register(&mut self.registers, &r, &new_value);
+            }
+            Instruction::Jump(condition, offset) => {
+                if get_value(&self.registers, &condition) > 0 {
+                    ip_offset = get_value(&self.registers, &offset);
+                }
+            }
+            Instruction::Snd(v) => (self.send(v)),
+            Instruction::Rcv(register) => match register {
+                Destination::Register(r) => {
+                    if self.queue.is_empty() {
+                        ip_offset = 0;
+                    } else {
+                        let value = self.queue.pop_front().unwrap();
+                        set_register(&mut self.registers, &r, &Destination::Value(value));
+                    }
+                }
+                Destination::Value(_) => {
+                    assert!(false, "Shouldn't be here");
+                }
+            },
+        }
+        let new_ip: i64 = (self.ip as i64) + ip_offset;
+        assert!(
+            new_ip >= 0 && (new_ip as usize) < self.instructions.len(),
+            "Invalid instruction pointer"
+        );
+
+        self.ip = (new_ip as usize);
+    }
+}
+
+struct Program1 {
     instructions: Vec<Instruction>,
     ip: usize,
     registers: HashMap<Register, i64>,
@@ -108,8 +261,8 @@ struct Program {
     last_recovered_frequency: Option<i64>,
 }
 
-impl Program {
-    fn new(source: &str) -> Result<Program, String> {
+impl Program1 {
+    fn new(source: &str) -> Result<Self, String> {
         let instructions = source
             .trim()
             .lines()
@@ -126,7 +279,7 @@ impl Program {
             ));
         }
 
-        Ok(Program {
+        Ok(Self {
             instructions: instructions.into_iter().map(|i| i.unwrap()).collect(),
             ip: 0,
             registers: HashMap::new(),
@@ -145,27 +298,35 @@ impl Program {
             // );
 
             match current_instruction {
-                Instruction::Set(r, v) => self.set_register(&r, &v),
+                Instruction::Set(r, v) => set_register(&mut self.registers, &r, &v),
                 Instruction::Add(r, v) => {
-                    let new_value = Destination::Value(self.get_register(&r) + self.get_value(&v));
-                    self.set_register(&r, &new_value);
+                    let new_value = Destination::Value(
+                        get_register(&mut self.registers, &r) + get_value(&self.registers, &v),
+                    );
+                    set_register(&mut self.registers, &r, &new_value);
                 }
                 Instruction::Mul(r, v) => {
-                    let new_value = Destination::Value(self.get_register(&r) * self.get_value(&v));
-                    self.set_register(&r, &new_value);
+                    let new_value = Destination::Value(
+                        get_register(&self.registers, &r) * get_value(&self.registers, &v),
+                    );
+                    set_register(&mut self.registers, &r, &new_value);
                 }
                 Instruction::Mod(r, v) => {
-                    let new_value = Destination::Value(self.get_register(&r) % self.get_value(&v));
-                    self.set_register(&r, &new_value);
+                    let new_value = Destination::Value(
+                        get_register(&self.registers, &r) % get_value(&self.registers, &v),
+                    );
+                    set_register(&mut self.registers, &r, &new_value);
                 }
                 Instruction::Jump(condition, offset) => {
-                    if self.get_value(&condition) > 0 {
-                        ip_offset = self.get_value(&offset);
+                    if get_value(&self.registers, &condition) > 0 {
+                        ip_offset = get_value(&self.registers, &offset);
                     }
                 }
-                Instruction::Snd(v) => self.last_played_frequency = Some(self.get_value(&v)),
+                Instruction::Snd(v) => {
+                    self.last_played_frequency = Some(get_value(&self.registers, &v))
+                }
                 Instruction::Rcv(condition) => {
-                    if self.get_value(&condition) != 0 {
+                    if get_value(&self.registers, &condition) != 0 {
                         self.last_recovered_frequency = self.last_played_frequency;
                     }
                 }
@@ -179,26 +340,10 @@ impl Program {
             self.ip = (new_ip as usize);
         }
     }
-
-    fn get_register(&self, register: &Register) -> i64 {
-        *self.registers.get(register).unwrap_or(&0)
-    }
-
-    fn set_register(&mut self, register: &Register, value: &Destination) {
-        let v = self.get_value(value);
-        self.registers.insert(register.clone(), v);
-    }
-
-    fn get_value(&self, value: &Destination) -> i64 {
-        match value {
-            &Destination::Value(v) => v,
-            &Destination::Register(r) => *self.registers.get(&r).unwrap_or(&0),
-        }
-    }
 }
 
 pub fn solve(input: &str) -> i64 {
-    let mut program = match Program::new(input) {
+    let mut program = match Program1::new(input) {
         Ok(program) => program,
         Err(error) => panic!(error),
     };
@@ -210,9 +355,33 @@ pub fn solve(input: &str) -> i64 {
         .expect("rcv should been called at least once")
 }
 
+pub fn solve2(input: &str) -> usize {
+    let mut program1 = match Program2::new(input, 0) {
+        Ok(program) => Rc::new(RefCell::new(program)),
+        Err(error) => panic!(error),
+    };
+
+    let mut program2 = match Program2::new(input, 1) {
+        Ok(program) => Rc::new(RefCell::new(program)),
+        Err(error) => panic!(error),
+    };
+
+    program1.borrow_mut().set_sibling(program2.clone());
+    program2.borrow_mut().set_sibling(program1.clone());
+
+    while !program1.borrow().is_deadlocked() || !program2.borrow().is_deadlocked() {
+        program1.borrow_mut().tick();
+        program2.borrow_mut().tick();
+    }
+
+    let result = program2.borrow().send_counter;
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
-    use super::solve;
+    use super::{solve, solve2};
 
     #[test]
     fn test_cases_star_one() {
@@ -233,5 +402,16 @@ mod tests {
     }
 
     #[test]
-    fn test_cases_star_two() {}
+    fn test_cases_star_two() {
+        let input = "
+                snd 1
+                snd 2
+                snd p
+                rcv a
+                rcv b
+                rcv c
+                rcv d
+                ";
+        assert_eq!(solve2(input), 3);
+    }
 }

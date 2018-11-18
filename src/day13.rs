@@ -1,5 +1,5 @@
-use std::ops::Range;
 use std::collections::HashMap;
+use std::ops::Range;
 
 #[derive(Debug)]
 struct State {
@@ -21,8 +21,7 @@ impl State {
                     parts[0].parse::<u32>().unwrap(),
                     parts[1].trim().parse::<u32>().unwrap(),
                 )
-            })
-            .collect::<HashMap<_, _>>();
+            }).collect::<HashMap<_, _>>();
 
         let scanner_locations = levels
             .keys()

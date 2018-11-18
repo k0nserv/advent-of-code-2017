@@ -185,8 +185,7 @@ fn parse(input: &str) -> Vec<Box<Expression>> {
             let condition = Condition::parse(&tokens[4..7]).unwrap();
 
             Box::new(Expression::new(target_register, operation, condition))
-        })
-        .collect()
+        }).collect()
 }
 
 pub fn solve(input: &str) -> (i32, i32) {

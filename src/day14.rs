@@ -19,15 +19,13 @@ fn build(input: &str) -> Vec<u128> {
                 256,
                 64,
             )
-        })
-        .map(|hash| {
+        }).map(|hash| {
             hash.chars().enumerate().fold(0, |acc: u128, (i, c)| {
                 let v = c.to_digit(16).unwrap();
 
                 acc | ((v & 0xf) as u128) << (124 - i * 4)
             })
-        })
-        .collect::<Vec<u128>>()
+        }).collect::<Vec<u128>>()
 }
 
 pub fn solve(input: &str) -> u32 {
@@ -35,22 +33,22 @@ pub fn solve(input: &str) -> u32 {
 
     rows.iter().fold(0, |acc, v| {
         acc + (0..128).fold(0, |inner_acc, i| {
-            inner_acc + ((v >> i & (0b0001 as u128))) as u32
+            inner_acc + (v >> i & (0b0001 as u128)) as u32
         })
     })
 }
 
 pub fn solve2(input: &str) -> u32 {
     let rows = build(input);
-    let mut accounted_for = rows.iter()
+    let mut accounted_for = rows
+        .iter()
         .enumerate()
         .flat_map(move |(x, &v)| {
             (0..128).rev().map(move |y| {
                 let is_empty = ((v >> y) & (0b1 as u128)) as u32 == 0;
                 ((x, 127 - y), is_empty)
             })
-        })
-        .collect::<HashMap<_, _>>();
+        }).collect::<HashMap<_, _>>();
     let mut num_regions = 0;
     let neighbours: &[(i32, i32)] = &[(0, 1), (0, -1), (1, 0), (-1, 0)];
 

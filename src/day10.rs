@@ -58,8 +58,7 @@ impl List {
                 (0..16)
                     .map(|ii| i * 16 + ii)
                     .fold(0 as u8, |acc, index| acc ^ self.storage[index])
-            })
-            .map(|c| format!("{:01$x}", c, 2))
+            }).map(|c| format!("{:01$x}", c, 2))
             .fold(String::new(), |acc, character| acc + &character)
     }
 }

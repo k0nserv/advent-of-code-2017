@@ -41,12 +41,10 @@ pub fn solve(input: &str) -> u32 {
                     v.trim_matches(|c: char| !c.is_numeric())
                         .parse::<u32>()
                         .expect("Expected number")
-                })
-                .collect::<Vec<_>>();
+                }).collect::<Vec<_>>();
 
             (id, connections)
-        })
-        .collect();
+        }).collect();
 
     let mut programs = HashSet::<u32>::new();
     let mut queue = VecDeque::<u32>::new();
@@ -82,12 +80,10 @@ pub fn solve2(input: &str) -> u32 {
                     v.trim_matches(|c: char| !c.is_numeric())
                         .parse::<u32>()
                         .expect("Expected number")
-                })
-                .collect::<Vec<_>>();
+                }).collect::<Vec<_>>();
 
             (id, connections)
-        })
-        .collect();
+        }).collect();
 
     groups(&connections).len() as u32
 }

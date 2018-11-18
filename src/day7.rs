@@ -1,5 +1,5 @@
-use std::fmt;
 use std::collections::{HashMap, HashSet};
+use std::fmt;
 
 struct Program {
     name: String,
@@ -36,14 +36,15 @@ impl Program {
             sum += self.weight;
         }
 
-        sum
-            + self.children
-                .iter()
-                .fold(0, |acc, child| acc + child.weight(include_self))
+        sum + self
+            .children
+            .iter()
+            .fold(0, |acc, child| acc + child.weight(include_self))
     }
 
     fn weight_required(&self, target_weight: u32) -> u32 {
-        let child_weights = self.children
+        let child_weights = self
+            .children
             .iter()
             .map(|child| child.weight(true))
             .collect::<Vec<u32>>();
@@ -51,7 +52,7 @@ impl Program {
 
         if balanced {
             let child_sum: u32 = child_weights.iter().sum();
-            return ((target_weight as i32 - child_sum as i32)) as u32;
+            return (target_weight as i32 - child_sum as i32) as u32;
         }
 
         let mut counts = HashMap::<u32, u32>::new();
@@ -116,8 +117,7 @@ fn parse<'a>(input: &'a str) -> Box<Program> {
             }
 
             (name.to_owned(), (name, weight, children))
-        })
-        .collect::<HashMap<_, _>>();
+        }).collect::<HashMap<_, _>>();
     let mut root = tree_map.keys().collect::<HashSet<_>>();
     let childs_of_other = tree_map
         .values()

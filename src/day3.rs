@@ -1,6 +1,6 @@
-use std::ops::Add;
 use grid::Grid;
 use std::iter;
+use std::ops::Add;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 struct Point {

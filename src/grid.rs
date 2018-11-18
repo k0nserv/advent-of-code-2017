@@ -1,5 +1,5 @@
-use std::ops::{Index, IndexMut};
 use std::iter;
+use std::ops::{Index, IndexMut};
 
 pub struct Grid {
     rows: Vec<Vec<Option<u32>>>,

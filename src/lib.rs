@@ -212,10 +212,11 @@ mod tests {
 
     #[test]
     fn solve_day18() {
-        use day18::solve;
+        use day18::{solve, solve2};
         let input = load_file("day18.txt");
 
         assert_eq!(solve(&input), 3188);
+        assert_eq!(solve2(&input), 7112);
     }
 
     #[test]

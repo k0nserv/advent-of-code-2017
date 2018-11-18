@@ -9,8 +9,7 @@ fn permutate(values: &Vec<i32>) -> Vec<[i32; 2]> {
                 .map(move |(ii, &vv)| if i == ii { None } else { Some([v, vv]) })
                 .filter(|x| x.is_some())
                 .map(|x| x.unwrap())
-        })
-        .collect()
+        }).collect()
 }
 
 pub fn row_data_min_max(row: &Vec<i32>) -> i32 {
@@ -33,8 +32,7 @@ pub fn solve(input: &str, data_for_row: &Fn(&Vec<i32>) -> i32) -> i32 {
                 .split_whitespace()
                 .map(|v| v.parse::<i32>().unwrap())
                 .collect::<Vec<i32>>()
-        })
-        .filter(|row| !row.is_empty())
+        }).filter(|row| !row.is_empty())
         .map(|row| data_for_row(&row))
         .sum()
 }

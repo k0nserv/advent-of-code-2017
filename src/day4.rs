@@ -1,5 +1,5 @@
-use std::iter::FromIterator;
 use std::collections::HashSet;
+use std::iter::FromIterator;
 
 pub trait Validator {
     fn new() -> Self;

@@ -3,7 +3,9 @@ use std::collections::HashSet;
 type Location = (usize, usize);
 
 fn is_valid_location(location: &Location, grid: &Vec<Vec<char>>) -> bool {
-    location.1 >= 0 && location.1 < grid.len() && location.0 >= 0
+    location.1 >= 0
+        && location.1 < grid.len()
+        && location.0 >= 0
         && location.0 < grid[location.1].len()
 }
 
@@ -48,25 +50,25 @@ pub fn solve(input: &str) -> (String, u64) {
                     && !grid[potential_next.1][potential_next.0].is_whitespace()
                 {
                     current_position = potential_next;
-                } else if is_valid_location(&left, &grid)
-                    && !(grid[left.1][left.0].is_whitespace() || previous_positions.contains(&left))
+                } else if is_valid_location(&left, &grid) && !(grid[left.1][left.0].is_whitespace()
+                    || previous_positions.contains(&left))
                 {
                     current_position = left;
                     direction = (-1, 0);
-                } else if is_valid_location(&right, &grid)
-                    && !(grid[right.1][right.0].is_whitespace()
-                        || previous_positions.contains(&right))
+                } else if is_valid_location(&right, &grid) && !(grid[right.1][right.0]
+                    .is_whitespace()
+                    || previous_positions.contains(&right))
                 {
                     current_position = right;
                     direction = (1, 0);
-                } else if is_valid_location(&top, &grid)
-                    && !(grid[top.1][top.0].is_whitespace() || previous_positions.contains(&top))
+                } else if is_valid_location(&top, &grid) && !(grid[top.1][top.0].is_whitespace()
+                    || previous_positions.contains(&top))
                 {
                     current_position = top;
                     direction = (0, -1);
-                } else if is_valid_location(&bottom, &grid)
-                    && !(grid[bottom.1][bottom.0].is_whitespace()
-                        || previous_positions.contains(&bottom))
+                } else if is_valid_location(&bottom, &grid) && !(grid[bottom.1][bottom.0]
+                    .is_whitespace()
+                    || previous_positions.contains(&bottom))
                 {
                     current_position = bottom;
                     direction = (0, 1);

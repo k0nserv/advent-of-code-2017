@@ -19,7 +19,8 @@ impl Programs {
     fn apply(&mut self, action: &Action) {
         match action {
             &Action::Spin(offset) => {
-                self.programs = self.programs
+                self.programs = self
+                    .programs
                     .clone()
                     .into_iter()
                     .cycle()

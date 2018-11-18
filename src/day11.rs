@@ -65,10 +65,9 @@ pub fn solve(input: &str) -> i32 {
         .map(|s| Direction::parse(s.trim()).expect(&format!("Unparsable direction {}", s)))
         .collect::<Vec<_>>();
 
-    let loc =
-        steps
-            .iter()
-            .fold(Location::origin(), |acc, step| acc.mv(step));
+    let loc = steps
+        .iter()
+        .fold(Location::origin(), |acc, step| acc.mv(step));
 
     loc.manhattan_distance(&Location::origin())
 }
@@ -92,8 +91,7 @@ pub fn solve2(input: &str) -> i32 {
             };
 
             (acc.mv(step), new_max)
-        })
-        .1
+        }).1
 }
 
 #[cfg(test)]
