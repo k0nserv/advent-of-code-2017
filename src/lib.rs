@@ -12,6 +12,7 @@ mod day17;
 mod day18;
 mod day19;
 mod day2;
+mod day20;
 mod day3;
 mod day4;
 mod day5;
@@ -225,5 +226,14 @@ mod tests {
         let input = load_file("day19.txt");
 
         assert_eq!(solve(&input), (String::from("MKXOIHZNBL"), 17872));
+    }
+
+    #[test]
+    fn solve_day20() {
+        use day20::{star_one, star_two};
+        let input = load_file("day20.txt");
+
+        assert_eq!(star_one(&input), 457);
+        assert_eq!(star_two(&input), 448);
     }
 }
